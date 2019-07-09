@@ -14,3 +14,9 @@ gRPC, spring boot, hibernate
  If you want to run client with your own settings run it with cli.
  Where 1 param - countOfUserSessions; 2 param - countOfRequestsPerUser; 3 param - countOfRoundsPerUser;
  
+Explanation of important choices in solution
+1. To acces DB we use hibernate with transactions
+2. Server and Client - it is monolit application
+3. grpc proto files, repositiries, services and client actions are organized by interfaces "Deposit", "Withdraw", "Balance"
+
+

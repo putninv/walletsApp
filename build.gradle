@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    // Provide convenience executables for trying out the examples.
+//    id 'application'
+    // ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier gradle versions
+    id 'com.google.protobuf' version '0.8.8'
+    // Generate IntelliJ IDEA's .idea & .iml project files
+    id 'idea'
+}
+
+group 'com.wallet'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+def grpcVersion = '1.21.0'
+def protobufVersion = '3.7.1'
+def protocVersion = protobufVersion
+
+dependencies {
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.6.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.1.6.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.1.6.RELEASE'
+    compile group: 'io.github.lognet', name: 'grpc-spring-boot-starter', version: '3.3.0'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.3.7.Final'
+    compile group: 'io.grpc', name: 'grpc-core', version: '1.2.0'
+    compile group: 'log4j', name: 'log4j', version: '1.2.12'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+
+    implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+
+
+    testImplementation "io.grpc:grpc-testing:${grpcVersion}"
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.28.2'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.4.RELEASE'
+}
+
+//protobuf gradle plugin
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}
